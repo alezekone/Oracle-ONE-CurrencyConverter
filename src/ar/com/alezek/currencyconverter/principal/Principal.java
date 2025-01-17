@@ -1,7 +1,7 @@
 package ar.com.alezek.currencyconverter.principal;
 
-import ar.com.alezek.currencyconverter.modelos.Conversion;
-import ar.com.alezek.currencyconverter.modelos.ConversionFromExchangeRateAPI;
+import ar.com.alezek.currencyconverter.modelos.Conversor;
+import ar.com.alezek.currencyconverter.modelos.ConversorFromExchangeRateAPI;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -35,18 +35,18 @@ public class Principal {
 
             String jsonResponse = response.body();
 
-            ConversionFromExchangeRateAPI miConversionFromExchangeRateAPI = gson.fromJson(jsonResponse, ConversionFromExchangeRateAPI.class);
+            ConversorFromExchangeRateAPI miConversorFromExchangeRateAPI = gson.fromJson(jsonResponse, ConversorFromExchangeRateAPI.class);
             System.out.println("Respuesta obtenida, i.e. estoy imprimiendo un objeto (implícitamente estoy usando toString()): ");
-            System.out.println(miConversionFromExchangeRateAPI);
+            System.out.println(miConversorFromExchangeRateAPI);
 
-            Conversion miConversion = new Conversion(miConversionFromExchangeRateAPI);
+            Conversor miConversor = new Conversor(miConversorFromExchangeRateAPI);
             System.out.println("Ahora imprimiré el objeto, como lo quiero para operar con él:");
-            System.out.println(miConversion);
+            System.out.println(miConversor);
 
             System.out.println("Ahora serializo el objeto con toJson para ver como quedaría si quisiera enviarlo:");
-            System.out.println(gson.toJson(miConversion, Conversion.class));
+            System.out.println(gson.toJson(miConversor, Conversor.class));
             System.out.println("Lo anterior es interesante. Vemos que Gson efectivamente usó la FieldNamePolicy, pero...");
-            System.out.println("lo hizo sobre nuestro objeto de clase 'miConversion', como es lógico, porque no sabe del DTO.");
+            System.out.println("lo hizo sobre nuestro objeto de clase 'miConversor', como es lógico, porque no sabe del DTO.");
             System.out.println("Supongo entonces que, si quisiera enviar mi objeto (si fuera una posibilidad, que no lo es) de regreso");
             System.out.println("a ExchangeRate-API, tendría que primero convertirlo a mi DTO, y luego serializar ese DTO con GSON. ");
 

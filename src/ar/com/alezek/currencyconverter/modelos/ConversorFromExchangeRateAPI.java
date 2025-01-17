@@ -39,5 +39,5 @@ package ar.com.alezek.currencyconverter.modelos;
     recibido del servidor.
  */
 
-public record ConversionFromExchangeRateAPI(String baseCode, String targetCode, double conversionRate) {
+public record ConversorFromExchangeRateAPI(String baseCode, String targetCode, double conversionRate) {
 }
