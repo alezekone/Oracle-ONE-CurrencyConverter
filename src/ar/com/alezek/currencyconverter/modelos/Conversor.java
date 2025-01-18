@@ -22,12 +22,14 @@ public class Conversor {
         this.origen = origen.name();
         this.destino = destino.name();
         // this.tipoDeCambio = tipoDeCambio;
+        inicializar();
     }
 
     public Conversor(ConversorFromExchangeRateAPI conversor) {
         this.origen = conversor.baseCode();
         this.destino = conversor.targetCode();
         this.tipoDeCambio = conversor.conversionRate();
+        inicializar();
     }
 
     public String getOrigen() {
@@ -51,7 +53,7 @@ public class Conversor {
                 '}';
     }
 
-    public void inicializar(){
+    private void inicializar(){
         this.direccion = URI.create("https://v6.exchangerate-api.com/v6/1983c3cae5adae371dcacfce/pair/"+origen+"/"+destino);
 
         this.gson = new GsonBuilder()
@@ -71,25 +73,25 @@ public class Conversor {
 
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            System.out.println("Respuesta obtenida:" + response.body());
+            // System.out.println("Respuesta obtenida:" + response.body());
 
             String jsonResponse = response.body();
 
             ConversorFromExchangeRateAPI miConversorFromExchangeRateAPI = gson.fromJson(jsonResponse, ConversorFromExchangeRateAPI.class);
-            System.out.println("Respuesta obtenida, i.e. estoy imprimiendo un objeto (implícitamente estoy usando toString()): ");
-            System.out.println(miConversorFromExchangeRateAPI);
+            // System.out.println("Respuesta obtenida, i.e. estoy imprimiendo un objeto (implícitamente estoy usando toString()): ");
+            // System.out.println(miConversorFromExchangeRateAPI);
 
             Conversor miConversor = new Conversor(miConversorFromExchangeRateAPI);
-            System.out.println("Ahora imprimiré el objeto, como lo quiero para operar con él:");
-            System.out.println(miConversor);
+            // System.out.println("Ahora imprimiré el objeto, como lo quiero para operar con él:");
+            // System.out.println(miConversor);
             this.tipoDeCambio = miConversor.getTipoDeCambio();
 
-            System.out.println("Ahora serializo el objeto con toJson para ver como quedaría si quisiera enviarlo:");
-            System.out.println(gson.toJson(miConversor, Conversor.class));
-            System.out.println("Lo anterior es interesante. Vemos que Gson efectivamente usó la FieldNamePolicy, pero...");
-            System.out.println("lo hizo sobre nuestro objeto de clase 'miConversor', como es lógico, porque no sabe del DTO.");
-            System.out.println("Supongo entonces que, si quisiera enviar mi objeto (si fuera una posibilidad, que no lo es) de regreso");
-            System.out.println("a ExchangeRate-API, tendría que primero convertirlo a mi DTO, y luego serializar ese DTO con GSON. ");
+            // System.out.println("Ahora serializo el objeto con toJson para ver como quedaría si quisiera enviarlo:");
+            // System.out.println(gson.toJson(miConversor, Conversor.class));
+            // System.out.println("Lo anterior es interesante. Vemos que Gson efectivamente usó la FieldNamePolicy, pero...");
+            // System.out.println("lo hizo sobre nuestro objeto de clase 'miConversor', como es lógico, porque no sabe del DTO.");
+            // System.out.println("Supongo entonces que, si quisiera enviar mi objeto (si fuera una posibilidad, que no lo es) de regreso");
+            // System.out.println("a ExchangeRate-API, tendría que primero convertirlo a mi DTO, y luego serializar ese DTO con GSON. ");
 
             return importeEnMonedaOrigen*this.getTipoDeCambio();
 
